@@ -1,53 +1,43 @@
-# Performance Marketing Analyst Studio
+# Sreejitha Nair — Performance Marketing Portfolio
 
-An independent portfolio project by Sreejitha Nair, focused on practical performance marketing, paid media planning and marketing analytics.
+An animated, responsive portfolio showcasing performance marketing, B2B demand generation, media planning, campaign analytics and product marketing work.
 
-## Live tool
+## Live portfolio
 
-[Open the Performance Marketing Analyst Studio](https://ai-marketing-budget-optimizer.onrender.com)
+[Open the portfolio website](https://ai-marketing-budget-optimizer.onrender.com)
 
-## Modules
+## Portfolio sections
 
-1. **Lead Goal Planner** — work backwards from a lead target to estimate the required budget using an expected CPL, or CPC and click-to-lead conversion rate. Includes daily budget, contingency and MQL/SQL volume estimates.
-2. **Campaign Analyzer** — calculate CPM, CTR, CPC, frequency, click-to-lead CVR, CPL, MQL rate, cost per MQL, MQL-to-SQL rate, cost per SQL, CPA and ROAS.
-3. **Media Planner** — allocate budget across Meta, Google and LinkedIn using editable CPC and conversion-rate assumptions. Checks whether channel shares total 100%.
-4. **Funnel Intelligence** — inspect conversion between impressions, clicks, landing-page views, leads, MQLs, SQLs, opportunities and wins.
-5. **Scenario Simulator** — model the impact of changes to budget, CPC and conversion rate.
-6. **Campaign Comparison & Reporting** — save campaign snapshots in the current browser session, export comparison data to CSV, and print/save a report as PDF.
-7. **Practice datasets** — fictional B2B managed-office lead generation, e-commerce and local-service lead generation scenarios.
+- About, profile and key experience
+- B2B media plan case study based on the supplied ₹20 lakh planning workbook
+- D2C tea brand ACOS optimisation case study (explicitly labelled illustrative/mock data)
+- Interactive media allocation explorer
+- Product marketing and GTM support
+- Career experience and marketing toolkit
+- Contact details
 
-## Run it
+## Interactive project
 
-Open [index.html](./index.html) in a modern browser. No installation, build step, API key or advertising account connection is required.
+[Open the Performance Marketing Analyst Studio](https://ai-marketing-budget-optimizer.onrender.com/calculator.html)
 
-## Metric formulas
+The standalone calculator includes:
+1. Lead Goal Planner — estimate budget for a target lead volume using CPL or CPC and conversion rate.
+2. Campaign Analyzer — calculate CPM, CTR, CPC, frequency, CVR, CPL, MQL rate, cost per MQL, MQL-to-SQL rate, cost per SQL, CPA and ROAS.
+3. Media Planner — allocate budget across Meta, Google and LinkedIn.
+4. Funnel Intelligence — inspect conversion from impressions through wins.
+5. Scenario Simulator — model budget, CPC and CVR changes.
+6. Campaign Comparison & Reporting — save campaign snapshots in the browser, export CSV and print a report.
 
-| Metric | Formula |
-|---|---|
-| CPM | Spend / impressions × 1,000 |
-| CTR | Clicks / impressions × 100 |
-| CPC | Spend / clicks |
-| Frequency | Impressions / reach |
-| Click-to-lead CVR | Leads / clicks × 100 |
-| CPL | Spend / leads |
-| MQL rate | MQLs / leads × 100 |
-| Cost per MQL | Spend / MQLs |
-| MQL-to-SQL rate | SQLs / MQLs × 100 |
-| Cost per SQL | Spend / SQLs |
-| CPA | Spend / conversions |
-| ROAS | Attributed revenue / spend |
+## Run locally
 
-## Lead budget planning
+Open `index.html` for the portfolio or `calculator.html` for the interactive analyst studio in a modern browser. No installation, build step, API key or advertising account connection is required.
 
-- Using CPL: **Estimated base budget = target leads × expected CPL**
-- Using funnel assumptions: **Required clicks = target leads / click-to-lead CVR**
-- **Estimated base budget = required clicks × expected CPC**
-- **Planned budget = base budget × (1 + contingency buffer)**
+## Data integrity
 
-These are planning estimates, not guarantees. Use historical account data or clearly labelled assumptions. Real results vary with auction conditions, audience, creative, landing-page experience, sales follow-up and attribution.
+- The B2B media plan is reconstructed from a supplied planning workbook. Forecasts are estimates based on workbook assumptions, not verified outcomes.
+- The D2C tea brand ACOS turnaround uses explicitly labelled hypothetical/mock data from an illustrative case study.
+- Career metrics are presented as estimates stated in the supplied CV.
+- The interactive tool uses user-entered assumptions and fictional practice datasets. It is not connected to live advertising accounts.
+- Forecasts are not guarantees; validate tracking, attribution windows, cohorts and conversion definitions before making budget decisions.
 
-## Important notes
-
-This is a portfolio learning tool, not a live advertising-platform integration. It uses user-entered data and does not transmit it to an ad platform. Sample datasets are fictional. Forecasts and diagnostic thresholds are illustrative, not universal benchmarks. Use consistent reporting dates, attribution windows, cohorts and conversion definitions when comparing platforms. Campaign comparison data is held in the current browser session and is not a cloud database.
-
-**Focus areas:** Performance Marketing · Paid Media · Media Planning · Campaign Measurement · Marketing Analytics
+**Focus areas:** Performance Marketing · Paid Media · Media Planning · Demand Generation · Campaign Measurement · Marketing Analytics · Product Marketing
