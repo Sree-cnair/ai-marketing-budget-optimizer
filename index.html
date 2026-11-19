@@ -1,31 +1,208 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Paid Media Performance Calculator</title>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Performance Marketing Analyst Studio</title>
 <style>
-:root{font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:#172033;background:#f4f6fb}*{box-sizing:border-box}body{margin:0}main{max-width:1120px;margin:auto;padding:36px 20px 60px}header{margin-bottom:26px}.eyebrow{font-size:11px;font-weight:800;letter-spacing:.15em;color:#565bd5;text-transform:uppercase}h1{font-size:clamp(30px,5vw,48px);letter-spacing:-.045em;margin:8px 0}p{color:#667085;line-height:1.6}.panel{background:white;border:1px solid #e5e9f2;border-radius:18px;padding:22px;margin:18px 0;box-shadow:0 8px 28px #15264a0a}h2{font-size:18px;margin:0 0 16px}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}label{font-size:12px;font-weight:700;color:#596579;display:block;margin-bottom:7px}input,select{width:100%;border:1px solid #d9dfeb;border-radius:10px;padding:12px;font:inherit;background:white;color:#172033}input:focus,select:focus{outline:3px solid #6366f122;border-color:#6366f1}.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.metric{background:#f8f9fd;border:1px solid #e9edf5;border-radius:13px;padding:15px;min-height:100px}.metric span{font-size:12px;color:#667085}.metric strong{font-size:23px;display:block;margin:9px 0 3px;letter-spacing:-.03em}.metric small,.hint{font-size:11px;color:#8791a3}button{border:0;border-radius:10px;padding:12px 17px;font-weight:750;cursor:pointer;background:#292f4c;color:white}.secondary{background:#eef0f8;color:#303853;margin-left:8px}.actions{margin-top:16px}.diagnostic{border-left:3px solid #7478e5;padding:5px 0 5px 14px;margin:12px 0;color:#424d63;line-height:1.55}.pill{display:inline-block;background:#eef0ff;color:#4c50bd;border-radius:30px;padding:6px 10px;font-size:11px;font-weight:750}footer{text-align:center;color:#8791a3;font-size:12px;margin-top:28px}@media(max-width:760px){.grid,.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:440px){main{padding:22px 13px}.panel{padding:15px}.grid,.cards{grid-template-columns:1fr 1fr}}
-</style></head><body><main>
-<header><div class="eyebrow">Independent performance marketing toolkit</div><h1>Paid Media Performance Calculator</h1><p>Calculate campaign KPIs across Meta Ads, Google Ads and LinkedIn Ads. Look beyond clicks and cheap leads to understand funnel quality and business outcomes.</p><span class="pill">Meta · Google · LinkedIn</span></header>
-<section class="panel"><h2>01 / Campaign inputs</h2><div class="grid">
-<div><label for="platform">Platform</label><select id="platform"><option>Meta Ads</option><option>Google Ads</option><option>LinkedIn Ads</option><option>Other / Blended</option></select></div>
-<div><label for="spend">Ad spend (₹)</label><input id="spend" type="number" min="0" value="300000"></div>
-<div><label for="impressions">Impressions</label><input id="impressions" type="number" min="0" value="200000"></div>
-<div><label for="clicks">Clicks</label><input id="clicks" type="number" min="0" value="2000"></div>
-<div><label for="leads">Leads</label><input id="leads" type="number" min="0" value="100"></div>
-<div><label for="mqls">Marketing qualified leads (MQL)</label><input id="mqls" type="number" min="0" value="40"></div>
-<div><label for="sqls">Sales qualified leads (SQL)</label><input id="sqls" type="number" min="0" value="20"></div>
-<div><label for="conversions">Conversions / purchases</label><input id="conversions" type="number" min="0" value="15"></div>
-<div><label for="revenue">Attributed revenue (₹)</label><input id="revenue" type="number" min="0" value="600000"></div>
-</div><div class="actions"><button id="calc">Calculate KPIs</button><button class="secondary" id="reset" type="button">Reset example</button></div><p class="hint">Use a consistent reporting period, attribution window and conversion definition. Inputs stay in your browser; no platform account connection is made.</p></section>
-<section class="panel"><h2>02 / Performance metrics</h2><div class="cards" id="results" aria-live="polite"></div></section>
-<section class="panel"><h2>03 / Funnel health check</h2><div id="diagnostics"></div><p class="hint">Diagnostic flags are investigation prompts, not universal benchmarks or automatic optimisation decisions. Compare against your account history, objective and industry context.</p></section>
-<section class="panel"><h2>04 / Formula reference</h2><div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr))"><p><b>CPM</b> = Spend ÷ impressions × 1,000<br><b>CTR</b> = Clicks ÷ impressions × 100<br><b>CPC</b> = Spend ÷ clicks<br><b>Click-to-lead CVR</b> = Leads ÷ clicks × 100<br><b>CPL</b> = Spend ÷ leads<br><b>Cost per MQL</b> = Spend ÷ MQLs</p><p><b>MQL rate</b> = MQLs ÷ leads × 100<br><b>SQL rate</b> = SQLs ÷ MQLs × 100<br><b>Cost per SQL</b> = Spend ÷ SQLs<br><b>CPA</b> = Spend ÷ conversions<br><b>ROAS</b> = Attributed revenue ÷ spend</p></div></section>
-<footer>Built as a portfolio learning project by Sreejitha Nair · Performance Marketing & Marketing Analytics</footer>
-</main><script>
-const ids=["spend","impressions","clicks","leads","mqls","sqls","conversions","revenue"],$=x=>document.getElementById(x),v=x=>Math.max(0,Number($(x).value)||0),ratio=(a,b)=>b>0?a/b:null;
-function money(x){return x===null?"—":new Intl.NumberFormat("en-IN",{style:"currency",currency:"INR",maximumFractionDigits:0}).format(x)}
-function num(x){return x===null?"—":new Intl.NumberFormat("en-IN",{maximumFractionDigits:2}).format(x)}
-function calculate(){let s=v("spend"),i=v("impressions"),c=v("clicks"),l=v("leads"),m=v("mqls"),q=v("sqls"),p=v("conversions"),r=v("revenue");
-let data=[["CPM",ratio(s*1000,i),"₹ / 1,000 impressions",money],["CTR",ratio(c*100,i),"Click-through rate",x=>x===null?"—":x.toFixed(2)+"%"],["CPC",ratio(s,c),"Cost per click",money],["Click-to-lead CVR",ratio(l*100,c),"Lead conversion rate",x=>x===null?"—":x.toFixed(2)+"%"],["CPL",ratio(s,l),"Cost per lead",money],["MQL rate",ratio(m*100,l),"Lead qualification rate",x=>x===null?"—":x.toFixed(2)+"%"],["Cost per MQL",ratio(s,m),"Spend per MQL",money],["SQL rate",ratio(q*100,m),"MQL-to-SQL rate",x=>x===null?"—":x.toFixed(2)+"%"],["Cost per SQL",ratio(s,q),"Spend per SQL",money],["CPA",ratio(s,p),"Cost per conversion",money],["ROAS",ratio(r,s),"Revenue / ad spend",x=>x===null?"—":x.toFixed(2)+"×"]];
-$("results").innerHTML=data.map(([a,b,c,f])=>'<div class="metric"><span>'+a+'</span><strong>'+f(b)+'</strong><small>'+c+'</small></div>').join("");
-let notes=[];if(i&&c/i<.005)notes.push("CTR is under 0.5% in this example. Inspect audience-message fit, creative relevance, placement and frequency; benchmark against the campaign objective.");if(c&&l/c<.02)notes.push("Click-to-lead rate is under 2%. Check landing-page speed, message match, offer clarity, form friction and tracking.");if(l&&m/l<.3)notes.push("MQL rate is under 30%. Review targeting, exclusions, qualification questions and the agreed MQL definition with sales.");if(m&&q/m<.4)notes.push("MQL-to-SQL progression is under 40%. Review lead follow-up time, sales feedback, qualification criteria and segment quality.");if(!notes.length)notes.push("No threshold flag was triggered by these simple checks. Compare KPIs with your own historical baseline and business targets.");notes.push("Avoid optimising only for CPL. Compare cost per MQL, cost per SQL, conversion rate and revenue to judge lead quality and business impact.");$("diagnostics").innerHTML=notes.map(t=>'<div class="diagnostic">'+t+'</div>').join("")}
-$("calc").addEventListener("click",calculate);$("reset").addEventListener("click",()=>{let d={spend:300000,impressions:200000,clicks:2000,leads:100,mqls:40,sqls:20,conversions:15,revenue:600000};ids.forEach(k=>$(k).value=d[k]);$("platform").value="Meta Ads";calculate()});ids.forEach(k=>$(k).addEventListener("input",calculate));calculate();
+:root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:#182238;background:#f4f6fb;--ink:#182238;--muted:#66738a;--line:#e3e8f1;--accent:#555bd7;--soft:#eef0ff;--green:#13795b;--amber:#a76512}
+*{box-sizing:border-box}body{margin:0}main{max-width:1240px;margin:auto;padding:30px 20px 60px}
+header{margin-bottom:22px}.eyebrow{font-size:11px;font-weight:850;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+h1{font-size:clamp(30px,5vw,46px);letter-spacing:-.045em;margin:7px 0}h2{font-size:19px;margin:0 0 15px}h3{font-size:15px;margin:0 0 10px}p{color:var(--muted);line-height:1.55}
+.hero{display:flex;justify-content:space-between;align-items:end;gap:20px}.hero p{max-width:760px;margin:8px 0 0}
+.pill{display:inline-flex;padding:6px 10px;border-radius:99px;background:var(--soft);color:#4148b7;font-size:11px;font-weight:800}
+nav{display:flex;gap:7px;overflow:auto;padding:8px 0 14px;position:sticky;top:0;background:#f4f6fb;z-index:5}
+nav button{white-space:nowrap;background:#fff;color:#526078;border:1px solid var(--line);padding:10px 13px}
+nav button.active{background:#292f4c;color:#fff;border-color:#292f4c}
+.panel{background:#fff;border:1px solid var(--line);border-radius:17px;padding:21px;margin:13px 0;box-shadow:0 7px 24px #18223808}
+.section{display:none}.section.active{display:block}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}.grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+label{font-size:12px;font-weight:750;color:#58657b;display:block;margin:0 0 6px}
+input,select,textarea{width:100%;border:1px solid #d8dfeb;border-radius:9px;padding:11px 12px;font:inherit;color:var(--ink);background:#fff}
+input:focus,select:focus,textarea:focus{outline:3px solid #555bd71c;border-color:var(--accent)}
+.field{min-width:0}.field small,.hint,.muted{font-size:11px;color:#8792a5;line-height:1.5}
+button{border:0;border-radius:9px;padding:11px 15px;font-weight:800;cursor:pointer;background:#292f4c;color:white}
+button.secondary{background:#eef0f7;color:#303a55}button.ghost{background:#fff;border:1px solid var(--line);color:#44516b}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
+.metric{background:#f8f9fd;border:1px solid #e9edf5;border-radius:12px;padding:14px;min-height:94px}
+.metric span{font-size:11px;color:#68758b}.metric strong{display:block;font-size:22px;letter-spacing:-.03em;margin:8px 0 3px}.metric small{font-size:10px;color:#8792a5}
+.callout{background:#f7f8ff;border:1px solid #e5e7ff;padding:14px;border-radius:12px;color:#46516b;line-height:1.55;margin:12px 0}
+.result{background:#f1fbf7;border:1px solid #d8f0e5;border-radius:13px;padding:16px}.result strong{font-size:28px;display:block;color:#116b50;margin:5px 0}
+.diagnostic{border-left:3px solid #7378dc;padding:5px 0 5px 13px;margin:11px 0;color:#46516b;line-height:1.55;font-size:13px}
+table{border-collapse:collapse;width:100%;font-size:13px}th,td{text-align:left;padding:11px;border-bottom:1px solid var(--line)}th{font-size:11px;color:#657188;background:#f8f9fc}
+.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:11px}
+.bar{height:9px;border-radius:20px;background:#e9ecf5;overflow:hidden}.bar i{display:block;height:100%;background:#6268df;border-radius:20px}
+footer{text-align:center;color:#8993a4;font-size:11px;margin-top:25px}
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{display:block}}
+@media(max-width:520px){main{padding:20px 12px 45px}.panel{padding:15px}.grid,.grid.two,.grid.three{grid-template-columns:1fr 1fr}.cards{grid-template-columns:1fr 1fr}nav button{padding:9px 10px;font-size:12px}}
+</style>
+</head>
+<body><main>
+<header><div class="eyebrow">Independent performance marketing toolkit</div><div class="hero"><div><h1>Performance Marketing Analyst Studio</h1><p>Plan budgets, estimate lead targets, analyse campaign performance, diagnose funnel gaps and model scenarios across Meta, Google and LinkedIn Ads.</p></div><span class="pill">ANALYST WORKSPACE · V1.0</span></div></header>
+<nav id="tabs">
+<button class="active" data-tab="overview">Overview</button><button data-tab="goal">Lead Goal Planner</button><button data-tab="analyzer">Campaign Analyzer</button><button data-tab="media">Media Planner</button><button data-tab="funnel">Funnel Intelligence</button><button data-tab="scenario">Scenario Simulator</button><button data-tab="reports">Reports</button>
+</nav>
+
+<section class="section active" id="overview">
+<div class="panel"><h2>Workspace overview</h2><p>Start with a sample dataset or enter your own campaign numbers in Campaign Analyzer. All calculations run locally in this browser.</p>
+<div class="grid three">
+<div class="field"><label>Load a sample scenario</label><select id="sample"><option value="">Choose a dataset</option><option value="b2b">B2B managed-office lead generation</option><option value="ecom">E-commerce purchase campaign</option><option value="lead">Local service lead generation</option></select></div>
+<div class="field"><label>Reporting currency</label><select id="currency"><option value="INR">INR (₹)</option><option value="USD">USD ($)</option></select></div>
+<div class="field"><label>Reporting period</label><select id="period"><option>Last 30 days</option><option>Last 7 days</option><option>Month to date</option><option>Custom period</option></select></div>
+</div>
+<div class="actions"><button onclick="loadSample()">Load sample data</button><button class="secondary" onclick="go('analyzer')">Open campaign analyzer</button></div></div>
+<div class="panel"><h2>How to use this studio</h2><div class="grid three">
+<div class="callout"><b>01 · Set the goal</b><br>Need 100 leads? Enter your CPL or CPC and conversion rate to estimate required spend.</div>
+<div class="callout"><b>02 · Analyse performance</b><br>Enter actual campaign results and inspect cost, conversion and lead-quality metrics.</div>
+<div class="callout"><b>03 · Make a decision</b><br>Compare channels, test scenarios and export a concise performance report.</div>
+</div><p class="hint">Sample data is fictional and designed for practice. Forecasts are estimates based on the assumptions you enter, not guaranteed outcomes.</p></div>
+</section>
+
+<section class="section" id="goal">
+<div class="panel"><h2>01 / Lead goal budget planner</h2><p>Work backwards from a business target. Enter the number of leads required and either your expected CPL, or the CPC and click-to-lead conversion rate.</p>
+<div class="grid three">
+<div class="field"><label>Target leads</label><input id="targetLeads" type="number" min="1" value="100"></div>
+<div class="field"><label>Estimation method</label><select id="goalMethod"><option value="cpl">I know my expected CPL</option><option value="funnel">I know CPC and conversion rate</option></select></div>
+<div class="field"><label>Expected CPL</label><input id="expectedCpl" type="number" min="0" value="1500"></div>
+<div class="field" id="cpcField" style="display:none"><label>Expected CPC</label><input id="expectedCpc" type="number" min="0" value="30"></div>
+<div class="field" id="cvrField" style="display:none"><label>Click-to-lead conversion rate (%)</label><input id="expectedCvr" type="number" min="0" max="100" step=".1" value="5"></div>
+<div class="field"><label>Campaign duration (days)</label><input id="goalDays" type="number" min="1" value="30"></div>
+<div class="field"><label>Contingency buffer (%)</label><input id="buffer" type="number" min="0" max="100" value="10"></div>
+</div><div class="actions"><button onclick="calculateGoal()">Estimate required budget</button></div>
+<div id="goalResult" class="result" style="margin-top:16px"><span class="muted">Estimated budget</span><strong>₹1,65,000</strong><span class="muted">Illustrative default: 100 leads × ₹1,500 CPL + 10% buffer.</span></div>
+<div id="goalBreakdown" class="callout">The planner will show expected clicks, base media spend, buffer and daily budget.</div>
+<p class="hint">Formula: Budget = target leads × expected CPL. If using funnel inputs: required clicks = target leads ÷ click-to-lead CVR; budget = required clicks × CPC. Buffer is added separately. Use a realistic historical or test-derived CPL/CPC and conversion rate.</p></div>
+<div class="panel"><h2>Optional / Add lead quality targets</h2><div class="grid three">
+<div class="field"><label>Expected MQL rate (%)</label><input id="goalMql" type="number" min="0" max="100" value="40"></div>
+<div class="field"><label>Expected MQL-to-SQL rate (%)</label><input id="goalSql" type="number" min="0" max="100" value="50"></div>
+<div class="field"><label>Target SQLs (optional)</label><input id="targetSqls" type="number" min="0" value="20"></div>
+</div><div class="actions"><button class="secondary" onclick="calculateGoal()">Calculate funnel targets</button></div><div id="goalQuality" class="callout">For 100 leads at the default assumptions: 40 MQLs and 20 SQLs.</div></div>
+</section>
+
+<section class="section" id="analyzer">
+<div class="panel"><h2>02 / Campaign performance analyzer</h2><p>Enter results for one campaign and calculate the full-funnel KPIs.</p>
+<div class="grid">
+<div class="field"><label>Platform</label><select id="platform"><option>Meta Ads</option><option>Google Ads</option><option>LinkedIn Ads</option><option>Other / Blended</option></select></div>
+<div class="field"><label>Campaign name</label><input id="campaignName" value="Campaign A"></div>
+<div class="field"><label>Ad spend</label><input id="spend" type="number" min="0" value="150000"></div>
+<div class="field"><label>Impressions</label><input id="impressions" type="number" min="0" value="500000"></div>
+<div class="field"><label>Reach (optional)</label><input id="reach" type="number" min="0" value="250000"></div>
+<div class="field"><label>Clicks</label><input id="clicks" type="number" min="0" value="10000"></div>
+<div class="field"><label>Leads</label><input id="leads" type="number" min="0" value="500"></div>
+<div class="field"><label>MQLs</label><input id="mqls" type="number" min="0" value="200"></div>
+<div class="field"><label>SQLs</label><input id="sqls" type="number" min="0" value="100"></div>
+<div class="field"><label>Conversions / purchases</label><input id="conversions" type="number" min="0" value="40"></div>
+<div class="field"><label>Attributed revenue</label><input id="revenue" type="number" min="0" value="600000"></div>
+<div class="field"><label>Link clicks (optional)</label><input id="linkClicks" type="number" min="0" value="8500"></div>
+</div><div class="actions"><button onclick="analyze()">Calculate performance</button><button class="secondary" onclick="loadSample()">Load selected sample</button><button class="ghost" onclick="saveCampaign()">Save to comparison</button></div>
+</div>
+<div class="panel"><h2>Performance scorecard</h2><div class="cards" id="metrics"></div><div class="callout" id="summary">Enter campaign results to generate the analysis.</div></div>
+</section>
+
+<section class="section" id="media">
+<div class="panel"><h2>03 / Media mix planner</h2><p>Allocate a total budget by channel and objective. The planner forecasts results using your assumptions; it does not use live platform benchmarks.</p>
+<div class="grid three">
+<div class="field"><label>Total budget</label><input id="totalBudget" type="number" min="0" value="300000"></div>
+<div class="field"><label>Campaign duration (days)</label><input id="mediaDays" type="number" min="1" value="30"></div>
+<div class="field"><label>Planning objective</label><select id="mediaObjective"><option>Lead generation</option><option>Website traffic</option><option>Purchases</option><option>Awareness</option></select></div>
+</div>
+<div class="tablewrap" style="margin-top:14px"><table><thead><tr><th>Channel</th><th>Budget share %</th><th>Assumed CPC</th><th>Click-to-result CVR %</th><th>Forecast results</th><th>Forecast cost/result</th></tr></thead><tbody>
+<tr><td>Meta Ads</td><td><input id="metaShare" type="number" value="40" min="0" max="100"></td><td><input id="metaCpc" type="number" value="20" min="0"></td><td><input id="metaCvr" type="number" value="4" min="0" max="100" step=".1"></td><td id="metaResults">—</td><td id="metaCpr">—</td></tr>
+<tr><td>Google Ads</td><td><input id="googleShare" type="number" value="40" min="0" max="100"></td><td><input id="googleCpc" type="number" value="35" min="0"></td><td><input id="googleCvr" type="number" value="5" min="0" max="100" step=".1"></td><td id="googleResults">—</td><td id="googleCpr">—</td></tr>
+<tr><td>LinkedIn Ads</td><td><input id="linkedinShare" type="number" value="20" min="0" max="100"></td><td><input id="linkedinCpc" type="number" value="150" min="0"></td><td><input id="linkedinCvr" type="number" value="2" min="0" max="100" step=".1"></td><td id="linkedinResults">—</td><td id="linkedinCpr">—</td></tr>
+</tbody></table></div>
+<div id="mediaCheck" class="callout">Channel allocations should total 100%.</div><div class="actions"><button onclick="planMedia()">Build media plan</button></div><div class="cards" id="mediaCards" style="margin-top:14px"></div>
+</div>
+</section>
+
+<section class="section" id="funnel">
+<div class="panel"><h2>04 / Funnel intelligence</h2><p>Review where the funnel is losing volume. Enter counts from the same cohort and reporting period wherever possible.</p>
+<div class="grid">
+<div class="field"><label>Impressions</label><input id="fImpressions" type="number" value="100000"></div><div class="field"><label>Clicks</label><input id="fClicks" type="number" value="3000"></div><div class="field"><label>Landing page views</label><input id="fViews" type="number" value="2400"></div><div class="field"><label>Leads</label><input id="fLeads" type="number" value="120"></div><div class="field"><label>MQLs</label><input id="fMqls" type="number" value="60"></div><div class="field"><label>SQLs</label><input id="fSqls" type="number" value="30"></div><div class="field"><label>Opportunities</label><input id="fOpps" type="number" value="12"></div><div class="field"><label>Wins / purchases</label><input id="fWins" type="number" value="4"></div>
+</div><div class="actions"><button onclick="diagnoseFunnel()">Diagnose funnel</button></div><div id="funnelOutput" style="margin-top:16px"></div></div>
+<div class="panel"><h2>How to interpret</h2><div class="callout"><b>Impressions → clicks:</b> inspect targeting, creative, offer, placement and CTR.</div><div class="callout"><b>Clicks → landing page views:</b> inspect page speed, redirects, tracking and click quality.</div><div class="callout"><b>Landing page views → leads:</b> inspect message match, form friction, trust and offer clarity.</div><div class="callout"><b>Leads → MQLs → SQLs:</b> inspect audience fit, qualification criteria, lead response time and sales feedback.</div><div class="callout"><b>Opportunities → wins:</b> inspect sales process, pricing, product fit and attribution.</div></div>
+</section>
+
+<section class="section" id="scenario">
+<div class="panel"><h2>05 / Scenario simulator</h2><p>Model a change in budget, CPC and conversion rate. The output is a simple sensitivity estimate, not an algorithmic platform forecast.</p>
+<div class="grid three">
+<div class="field"><label>Current budget</label><input id="sBudget" type="number" value="100000" min="0"></div><div class="field"><label>Current CPC</label><input id="sCpc" type="number" value="25" min="0"></div><div class="field"><label>Current click-to-lead CVR (%)</label><input id="sCvr" type="number" value="4" min="0" max="100" step=".1"></div>
+<div class="field"><label>Budget change (%)</label><input id="sBudgetChange" type="number" value="20"></div><div class="field"><label>CPC change (%)</label><input id="sCpcChange" type="number" value="10"></div><div class="field"><label>CVR change (%)</label><input id="sCvrChange" type="number" value="15"></div>
+</div><div class="actions"><button onclick="simulate()">Run scenario</button></div><div class="cards" id="scenarioCards" style="margin-top:15px"></div><div id="scenarioNote" class="callout">Change the assumptions and run the scenario to compare projected leads and CPL.</div></div>
+</section>
+
+<section class="section" id="reports">
+<div class="panel"><h2>06 / Campaign comparison & reporting</h2><p>Save campaigns from the analyzer to compare them side by side. These entries remain in this browser session only.</p>
+<div class="tablewrap"><table><thead><tr><th>Campaign</th><th>Platform</th><th>Spend</th><th>Leads</th><th>CPL</th><th>Cost / SQL</th><th>ROAS</th></tr></thead><tbody id="comparisonBody"><tr><td colspan="7">No saved campaigns yet.</td></tr></tbody></table></div>
+<div class="actions"><button onclick="exportCsv()">Export comparison CSV</button><button class="secondary" onclick="printReport()">Print / Save report as PDF</button><button class="ghost" onclick="clearCampaigns()">Clear comparison</button></div>
+<div class="panel" style="box-shadow:none;margin:16px 0 0;background:#fafbfe"><h3>Analyst notes</h3><textarea id="analystNotes" rows="4" placeholder="Add context: objective, audience, attribution window, key learning, next test..."></textarea></div>
+<p class="hint">A useful report states the objective, time period, attribution method, what changed, what the data shows and what action you recommend. Do not present correlation as causation.</p>
+</div>
+</section>
+<footer>Built as a portfolio learning project by Sreejitha Nair · Performance Marketing & Marketing Analytics · Fictional sample data · Forecasts depend on user-entered assumptions</footer>
+</main>
+<script>
+const $=id=>document.getElementById(id),num=id=>Math.max(0,Number($(id).value)||0),ratio=(a,b)=>b>0?a/b:null;
+let saved=[],lastAnalysis=null;
+function cur(x){let c=$('currency')?.value||'INR';return x===null||!Number.isFinite(x)?'—':new Intl.NumberFormat('en-IN',{style:'currency',currency:c,maximumFractionDigits:0}).format(x)}
+function n(x,d=1){return x===null||!Number.isFinite(x)?'—':new Intl.NumberFormat('en-IN',{maximumFractionDigits:d}).format(x)}
+function pct(x){return x===null?'—':n(x,2)+'%'}
+function go(id){document.querySelectorAll('.section').forEach(s=>s.classList.toggle('active',s.id===id));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));window.scrollTo({top:0,behavior:'smooth'})}
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>go(b.dataset.tab)));
+$('goalMethod').addEventListener('change',()=>{let f=$('goalMethod').value==='funnel';$('cpcField').style.display=f?'block':'none';$('cvrField').style.display=f?'block':'none';$('expectedCpl').parentElement.style.display=f?'none':'block'});
+function calculateGoal(){
+ let leads=num('targetLeads'),days=Math.max(1,num('goalDays')),buffer=num('buffer')/100,base,clicks=null,cpl;
+ if($('goalMethod').value==='cpl'){cpl=num('expectedCpl');base=leads*cpl}
+ else{let cpc=num('expectedCpc'),cvr=num('expectedCvr')/100;if(cpc<=0||cvr<=0){$('goalResult').innerHTML='<b>Enter a CPC and conversion rate greater than zero.</b>';return}clicks=leads/cvr;base=clicks*cpc;cpl=cpc/cvr}
+ if(leads<=0||base<=0){$('goalResult').innerHTML='<b>Enter a valid target and cost assumption.</b>';return}
+ let total=base*(1+buffer),mql=leads*num('goalMql')/100,sql=mql*num('goalSql')/100;
+ $('goalResult').innerHTML='<span class="muted">Estimated budget including '+n(buffer*100,1)+'% buffer</span><strong>'+cur(total)+'</strong><span class="muted">Base media budget: '+cur(base)+' · Daily budget: '+cur(total/days)+'</span>';
+ $('goalBreakdown').innerHTML='<b>Planning breakdown</b><br>Target leads: '+n(leads,0)+'<br>Expected CPL: '+cur(cpl)+'<br>'+(clicks===null?'':'Estimated clicks required: '+n(clicks,0)+'<br>')+'Contingency: '+cur(total-base)+'<br>Duration: '+days+' days';
+ $('goalQuality').innerHTML='<b>Expected funnel volumes</b><br>Leads: '+n(leads,0)+' → MQLs: '+n(mql,0)+' → SQLs: '+n(sql,0)+'<br>Estimated cost per MQL: '+cur(mql?total/mql:null)+' · Estimated cost per SQL: '+cur(sql?total/sql:null)+(num('targetSqls')?' · SQL target: '+n(num('targetSqls'),0):'');
+}
+function loadSample(){
+ let key=$('sample').value||'b2b',d={
+ b2b:{platform:'LinkedIn Ads',campaignName:'B2B Managed Office Lead Gen',spend:300000,impressions:180000,reach:95000,clicks:1800,leads:86,mqls:43,sqls:22,conversions:6,revenue:1800000,linkClicks:1550},
+ ecom:{platform:'Meta Ads',campaignName:'E-commerce Prospecting',spend:200000,impressions:900000,reach:520000,clicks:13500,leads:0,mqls:0,sqls:0,conversions:240,revenue:900000,linkClicks:12000},
+ lead:{platform:'Google Ads',campaignName:'Local Service Leads',spend:75000,impressions:120000,reach:0,clicks:4500,leads:180,mqls:108,sqls:54,conversions:20,revenue:250000,linkClicks:4200}};
+ Object.entries(d[key]).forEach(([k,v])=>{if($(k))$(k).value=v});$('sample').value=key;analyze();go('analyzer')
+}
+function analyze(){
+ let d={platform:$('platform').value,name:$('campaignName').value,spend:num('spend'),impressions:num('impressions'),reach:num('reach'),clicks:num('clicks'),leads:num('leads'),mqls:num('mqls'),sqls:num('sqls'),conversions:num('conversions'),revenue:num('revenue'),linkClicks:num('linkClicks')};
+ let m=[['CPM',ratio(d.spend*1000,d.impressions),'per 1,000 impressions',cur],['CTR',ratio(d.clicks*100,d.impressions),'click-through rate',pct],['CPC',ratio(d.spend,d.clicks),'cost per click',cur],['Frequency',ratio(d.impressions,d.reach),'impressions per person',x=>n(x,2)],['Click-to-lead CVR',ratio(d.leads*100,d.clicks),'clicks to leads',pct],['CPL',ratio(d.spend,d.leads),'cost per lead',cur],['MQL rate',ratio(d.mqls*100,d.leads),'leads to MQLs',pct],['Cost / MQL',ratio(d.spend,d.mqls),'spend per MQL',cur],['MQL-to-SQL rate',ratio(d.sqls*100,d.mqls),'MQLs to SQLs',pct],['Cost / SQL',ratio(d.spend,d.sqls),'spend per SQL',cur],['CPA',ratio(d.spend,d.conversions),'cost per conversion',cur],['ROAS',ratio(d.revenue,d.spend),'revenue / spend',x=>x===null?'—':n(x,2)+'×']];
+ $('metrics').innerHTML=m.map(x=>'<div class="metric"><span>'+x[0]+'</span><strong>'+x[3](x[1])+'</strong><small>'+x[2]+'</small></div>').join('');
+ let flags=[];if(d.impressions&&ratio(d.clicks,d.impressions)<.005)flags.push('CTR is below 0.5% in this illustrative rule. Inspect creative relevance, audience-message fit, placements and frequency.');if(d.clicks&&ratio(d.leads,d.clicks)<.02)flags.push('Click-to-lead conversion is below 2%. Check landing-page speed, message match, form friction and tracking.');if(d.leads&&ratio(d.mqls,d.leads)<.3)flags.push('MQL rate is below 30%. Review targeting, exclusions and qualification criteria with sales.');if(d.mqls&&ratio(d.sqls,d.mqls)<.4)flags.push('MQL-to-SQL rate is below 40%. Review lead follow-up speed, sales feedback and segment quality.');if(!flags.length)flags.push('No illustrative threshold flags were triggered. Compare against account history, campaign objective and business targets.');
+ $('summary').innerHTML='<b>'+d.name+' · '+d.platform+'</b><br>'+flags.join('<br><br>')+'<br><br><span class="muted">These are investigation prompts, not universal benchmarks. Validate attribution, tracking and cohort consistency before making budget decisions.</span>';
+ lastAnalysis=d;return d
+}
+function saveCampaign(){let d=analyze();saved.push({...d});renderSaved();go('reports')}
+function renderSaved(){$('comparisonBody').innerHTML=saved.length?saved.map(d=>'<tr><td>'+esc(d.name)+'</td><td>'+esc(d.platform)+'</td><td>'+cur(d.spend)+'</td><td>'+n(d.leads,0)+'</td><td>'+cur(ratio(d.spend,d.leads))+'</td><td>'+cur(ratio(d.spend,d.sqls))+'</td><td>'+(ratio(d.revenue,d.spend)===null?'—':n(ratio(d.revenue,d.spend),2)+'×')+'</td></tr>').join(''):'<tr><td colspan="7">No saved campaigns yet.</td></tr>'}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function planMedia(){
+ let total=num('totalBudget'),days=Math.max(1,num('mediaDays')),channels=[['Meta','meta'],['Google','google'],['LinkedIn','linkedin']],share=channels.reduce((a,[,k])=>a+num(k+'Share'),0),out=[];
+ if(Math.abs(share-100)>.01){$('mediaCheck').innerHTML='<b>Allocation currently totals '+n(share,1)+'%.</b> Adjust channel shares to exactly 100% before using this plan.';return}
+ channels.forEach(([name,k])=>{let budget=total*num(k+'Share')/100,cpc=num(k+'Cpc'),cvr=num(k+'Cvr')/100,clicks=ratio(budget,cpc),results=clicks===null?null:clicks*cvr,cpr=results?budget/results:null;$(k+'Results').textContent=n(results,0);$(k+'Cpr').textContent=cur(cpr);out.push({name,budget,clicks,results,cpr})});
+ $('mediaCheck').innerHTML='<b>Allocation validated:</b> '+cur(total)+' across '+days+' days · Daily total '+cur(total/days)+'. Objective: '+$('mediaObjective').value+'.';
+ $('mediaCards').innerHTML=out.map(o=>'<div class="metric"><span>'+o.name+' budget · '+n(o.budget/total*100,0)+'%</span><strong>'+cur(o.budget)+'</strong><small>Est. results: '+n(o.results,0)+' · Est. cost/result: '+cur(o.cpr)+'</small></div>').join('')
+}
+function diagnoseFunnel(){
+ let stages=[['Impressions',num('fImpressions')],['Clicks',num('fClicks')],['Landing page views',num('fViews')],['Leads',num('fLeads')],['MQLs',num('fMqls')],['SQLs',num('fSqls')],['Opportunities',num('fOpps')],['Wins / purchases',num('fWins')]],html='';
+ stages.forEach((s,i)=>{let prev=i?stages[i-1][1]:null,rate=i?ratio(s[1]*100,prev):null;html+='<div style="margin:12px 0"><div style="display:flex;justify-content:space-between;gap:10px"><b>'+s[0]+'</b><span>'+n(s[1],0)+(i?' · '+pct(rate)+' from previous':'')+'</span></div><div class="bar"><i style="width:'+(i?Math.min(100,rate||0):100)+'%"></i></div></div>';});
+ let notes=[];let rates=stages.slice(1).map((s,i)=>({name:s[0],rate:ratio(s[1]*100,stages[i][1])}));rates.forEach(x=>{if(x.rate!==null&&x.rate<10)notes.push(x.name+' stage conversion is below 10%. Investigate this handoff before changing budgets.');});if(!notes.length)notes.push('No very low (<10%) stage conversion was flagged. Review stage-specific targets and lead quality rather than relying on a generic threshold.');
+ $('funnelOutput').innerHTML=html+'<div class="callout"><b>Investigation prompts</b><br>'+notes.join('<br>')+'<br><br>Use the same cohort and attribution window across stages. Stage conversion benchmarks vary by business model and sales cycle.</div>'
+}
+function simulate(){
+ let b=num('sBudget'),c=num('sCpc'),v=num('sCvr')/100,bc=Number($('sBudgetChange').value)||0,cc=Number($('sCpcChange').value)||0,vc=Number($('sCvrChange').value)||0;
+ let oldClicks=ratio(b,c),oldLeads=oldClicks===null?null:oldClicks*v,nb=b*(1+bc/100),nc=c*(1+cc/100),nv=v*(1+vc/100),newClicks=ratio(nb,nc),newLeads=newClicks===null?null:newClicks*nv;
+ $('scenarioCards').innerHTML=[['Baseline leads',n(oldLeads,0)],['Scenario leads',n(newLeads,0)],['Baseline CPL',cur(ratio(b,oldLeads))],['Scenario CPL',cur(ratio(nb,newLeads))],['Budget change',n(bc,1)+'%'],['Lead volume change',oldLeads? n((newLeads/oldLeads-1)*100,1)+'%':'—']].map(x=>'<div class="metric"><span>'+x[0]+'</span><strong>'+x[1]+'</strong></div>').join('');
+ $('scenarioNote').innerHTML='Scenario spend: '+cur(nb)+' · Estimated clicks: '+n(newClicks,0)+' · Estimated leads: '+n(newLeads,0)+'. Assumes the entered CPC and CVR changes apply uniformly; real campaigns may show diminishing returns, auction changes and audience saturation.'
+}
+function exportCsv(){
+ let rows=[['Campaign','Platform','Spend','Impressions','Clicks','Leads','MQLs','SQLs','Conversions','Revenue','CPL','Cost per SQL','ROAS'],...saved.map(d=>[d.name,d.platform,d.spend,d.impressions,d.clicks,d.leads,d.mqls,d.sqls,d.conversions,d.revenue,ratio(d.spend,d.leads)??'',ratio(d.spend,d.sqls)??'',ratio(d.revenue,d.spend)??''])];
+ let csv=rows.map(r=>r.map(x=>'"'+String(x).replace(/"/g,'""')+'"').join(',')).join('\n'),a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='campaign-comparison.csv';a.click();URL.revokeObjectURL(a.href)
+}
+function printReport(){let notes=$('analystNotes').value;let w=window.open('','_blank');if(!w){alert('Please allow pop-ups to print or save your report.');return}w.document.write('<html><head><title>Performance Marketing Report</title><style>body{font:14px Arial;padding:35px;color:#182238}h1{font-size:25px}table{border-collapse:collapse;width:100%}td,th{border:1px solid #ddd;padding:8px;text-align:left}p{white-space:pre-wrap}</style></head><body><h1>Performance Marketing Report</h1><p>Generated '+new Date().toLocaleString()+'</p><h2>Campaign comparison</h2>'+document.querySelector('#reports .tablewrap').innerHTML+'<h2>Analyst notes</h2><p>'+esc(notes)+'</p><p>Forecasts and sample data are estimates; validate source data, attribution and reporting period.</p></body></html>');w.document.close();w.focus();w.print()}
+function clearCampaigns(){saved=[];renderSaved()}
+['spend','impressions','clicks','leads','mqls','sqls','conversions','revenue','reach','linkClicks'].forEach(id=>$(id).addEventListener('input',()=>{}));
+calculateGoal();analyze();planMedia();diagnoseFunnel();simulate();
 </script></body></html>
